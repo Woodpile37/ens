@@ -1,4 +1,4 @@
-pragma solidity ^0.7.0;
+pragma solidity ^0.4.24;
 
 import "./ENS.sol";
 
@@ -7,7 +7,7 @@ import "./ENS.sol";
  * expires registrations a fixed period after they're initially claimed.
  */
 contract TestRegistrar {
-    uint constant registrationPeriod = 4 weeks;
+    uint constant REGISTRATION_PERIOD = 4 weeks;
 
     ENS public ens;
     bytes32 public rootNode;
@@ -29,9 +29,9 @@ contract TestRegistrar {
      * @param owner The address of the new owner.
      */
     function register(bytes32 label, address owner) public {
-        require(expiryTimes[label] < block.timestamp);
+        require(expiryTimes[label] < now);
 
-        expiryTimes[label] = block.timestamp + registrationPeriod;
+        expiryTimes[label] = now + REGISTRATION_PERIOD;
         ens.setSubnodeOwner(rootNode, label, owner);
     }
 }
